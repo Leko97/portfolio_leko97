@@ -23,10 +23,36 @@ body {
 /* CSS Variables */
 :root {
   --neon-green: #00ff88;
+  --neon-strong: rgba(0, 255, 136, 0.28);
+  --neon-soft: rgba(0, 255, 136, 0.12);
   --black: #000000;
   --dark-gray: #050505;
   --text-gray: rgba(255, 255, 255, 0.6);
   --text-light: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes glowPulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+@keyframes sheen {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
 }
 
 /* Containers */
@@ -108,6 +134,11 @@ header.scrolled {
 }
 .logo-image {
   width: 10vw;
+}
+.onetouch-svg {
+  width: 8vw;
+  height: auto;
+  object-fit: contain;
 }
 .logo-text {
   color: rgba(255, 255, 255, 0.8);
@@ -710,6 +741,8 @@ header.scrolled .header-divider {
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  position: relative; /* necessário para o overlay do fundo neon */
+  overflow: hidden;
 }
 
 .project-card:hover {
@@ -720,12 +753,160 @@ header.scrolled .header-divider {
 .project-icon {
   padding: 1rem;
   border-radius: 12px;
-  background-color: rgba(0, 255, 136, 0.1);
-  border: 1px solid rgba(0, 255, 136, 0.2);
+  background-color: transparent; /* fundo do ícone fica transparente, o card terá o overlay neon */
+  border: none;
   color: var(--neon-green);
   display: inline-flex;
   width: fit-content;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1.5rem; /* centraliza horizontalmente */
+  justify-content: center;
+  align-items: center;
+}
+
+/* Overlay neon que ocupa todo o card (atrás do conteúdo) */
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 255, 136, 0.06),
+    rgba(0, 255, 136, 0.02)
+  );
+}
+
+/* Garante que o conteúdo do card fique acima do overlay */
+.project-card > * {
+  position: relative;
+  z-index: 2;
+}
+/* Intensificação visual: anel neon, sheen e hover mais chamativo */
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+      circle at 18% 18%,
+      var(--neon-strong) 0%,
+      transparent 28%
+    ),
+    radial-gradient(circle at 82% 82%, var(--neon-soft) 0%, transparent 40%);
+  filter: blur(34px);
+  opacity: 0.92;
+  animation: glowPulse 5.5s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+.project-card::after {
+  content: "";
+  position: absolute;
+  left: -40%;
+  top: -10%;
+  width: 60%;
+  height: 120%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-120%);
+  mix-blend-mode: overlay;
+  opacity: 0.72;
+  animation: sheen 3.6s linear infinite;
+}
+
+.project-card > * {
+  position: relative;
+  z-index: 4;
+}
+
+.project-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 40px 120px rgba(0, 255, 136, 0.18);
+  border-color: rgba(0, 255, 136, 0.28);
+}
+
+.project-card:hover::before {
+  filter: blur(26px);
+  opacity: 1;
+}
+
+.project-icon {
+  position: relative;
+}
+
+.project-icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--pill-size, 80px) + 36px);
+  height: calc(var(--pill-size, 80px) + 36px);
+  border-radius: 16px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(0, 255, 136, 0.18),
+    rgba(0, 255, 136, 0.02) 40%
+  );
+  filter: blur(10px);
+  z-index: 1;
+  pointer-events: none;
+  transition: transform 300ms ease, opacity 300ms ease;
+  opacity: 0.9;
+}
+
+.project-icon img,
+.project-icon svg {
+  position: relative;
+  z-index: 3;
+}
+
+.project-card:hover .project-icon::after {
+  transform: translate(-50%, -52%) scale(1.06);
+  opacity: 1;
+}
+
+.project-icon img {
+  filter: drop-shadow(0 12px 30px rgba(0, 255, 136, 0.16));
+}
+
+.project-title {
+  font-weight: 700;
+}
+.project-card:hover .project-title {
+  color: #eafff2;
+  text-shadow: 0 4px 22px rgba(0, 255, 136, 0.25);
+}
+.bradesco {
+  width: 6.25vw !important;
+  height: auto !important;
+}
+/* Tamanho padrão dos ícones dentro dos cards de projeto */
+.project-icon .pill-icon,
+.project-icon img.pill-icon,
+.project-icon svg.pill-icon {
+  width: 64px;
+  height: 64px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Ajuste responsivo: ícones um pouco maiores em telas maiores */
+@media (min-width: 1024px) {
+  .project-icon .pill-icon,
+  .project-icon img.pill-icon,
+  .project-icon svg.pill-icon {
+    width: 80px;
+    height: 80px;
+  }
 }
 
 .project-title {
@@ -878,6 +1059,154 @@ header.scrolled .header-divider {
 @media (min-width: 640px) {
   .logo-text {
     display: block;
+  }
+}
+
+/* Modal / Popup de projeto */
+.proj-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  padding: 2rem;
+}
+.proj-modal.active {
+  display: flex;
+}
+.proj-modal .modal-card {
+  width: 100%;
+  max-width: 980px;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.98),
+    rgba(6, 6, 6, 0.95)
+  );
+  border: 1px solid rgba(0, 255, 136, 0.12);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+}
+.proj-modal .modal-media {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 255, 136, 0.06),
+    rgba(0, 255, 136, 0.02)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.proj-modal .modal-media img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+.proj-modal .modal-gallery {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.proj-modal .gallery-track {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.proj-modal .gallery-track img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+.proj-modal .gallery-prev,
+.proj-modal .gallery-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.45);
+  color: #eafff2;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.proj-modal .gallery-prev {
+  left: 12px;
+}
+.proj-modal .gallery-next {
+  right: 12px;
+}
+.proj-modal .modal-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+.proj-modal .modal-thumbs img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.7;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.proj-modal .modal-thumbs img.active {
+  outline: 2px solid var(--neon-green);
+  opacity: 1;
+}
+.proj-modal .modal-body {
+  padding: 2rem;
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.proj-modal .modal-body h3 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+.proj-modal .modal-body .modal-desc {
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+.proj-modal .modal-body .modal-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.proj-modal .modal-close {
+  position: absolute;
+  right: 1.25rem;
+  top: 1.25rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-light);
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 10001;
+}
+
+@media (max-width: 900px) {
+  .proj-modal .modal-card {
+    grid-template-columns: 1fr;
+  }
+  .proj-modal .modal-media {
+    padding: 1rem;
+  }
+  .proj-modal {
+    padding: 1rem;
   }
 }
 
