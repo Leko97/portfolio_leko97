@@ -48,6 +48,7 @@
         </nav>
       </div>
     </header>
+    <!-- Portrait (substitua o arquivo em assets/images/portrait-placeholder.svg) -->
 
     <!-- Hero Section -->
     <section class="hero">
@@ -86,24 +87,29 @@
                 sua própria identidade.
               </p>
             </div>
-
+            <!-- <div class="hero-portrait" aria-hidden="false">
+              <img
+                src="assets/images/leko.png"
+                alt="Foto de perfil — Leonardo"
+                id="heroPortrait"
+              />
+            </div> -->
             <!-- CTA Buttons -->
             <div class="cta-buttons">
               <a href="#projetos" class="btn btn-primary">Ver Projetos</a>
               <a href="#contato" class="btn btn-secondary">Falar comigo</a>
             </div>
           </div>
-
           <!-- Right: Visual Element -->
           <div class="hero-visual">
             <div class="liquid-container">
               <div class="liquid-glass-1"></div>
               <div class="liquid-glass-2">
                 <img class="hero-ot" src="assets/images/hero-ot.png" alt="" />
+                <!-- portrait removed: kept hero-portrait only -->
+                <!-- Floaters: imagens que se movem e colidem dentro do vidro -->
+                <div id="floaters" class="floaters" aria-hidden="true"></div>
               </div>
-
-              <!-- Floaters: imagens que se movem e colidem dentro do vidro -->
-              <div id="floaters" class="floaters" aria-hidden="true"></div>
 
               <!-- Floating Icons
               <div class="floating-icon icon-1">
@@ -171,6 +177,17 @@
       <div class="container">
         <h2 class="section-title">Sobre <span class="highlight">mim</span></h2>
 
+        <!-- About photo (disruptive polaroid / overlapping) -->
+        <div class="about-photo" aria-hidden="true">
+          <div class="polaroid">
+            <img src="assets/images/leko.png" alt="Leonardo Ortelan Hora" />
+            <div class="polaroid-caption">
+              <strong>Leo Ortelan Hora</strong>
+              <span>CTO &amp; Co-founder</span>
+            </div>
+          </div>
+        </div>
+
         <div class="about-grid">
           <!-- Left: About Text -->
           <div class="about-content">
@@ -204,7 +221,10 @@
                 <div class="timeline-content">
                   <div class="timeline-year">2024 – atual</div>
                   <div class="timeline-desc">
-                    Co-founder – One Touch Interactive Solutions
+                    Co-founder –
+                    <span class="highlight">
+                      One Touch Interactive Solutions</span
+                    >
                     <div class="timeline-meta">
                       São Paulo/SP · Presencial ·
                       <span class="timeline-dates">nov/2024 – atual</span>
@@ -235,7 +255,8 @@
                 <div class="timeline-content">
                   <div class="timeline-year">2024 – atual</div>
                   <div class="timeline-desc">
-                    Especialista em tecnologia – WTotem
+                    Especialista em tecnologia –
+                    <span class="highlight">WTotem</span>
                     <div class="timeline-meta">
                       São Paulo/SP · Presencial ·
                       <span class="timeline-dates">jan/2024 – atual</span>
@@ -350,7 +371,7 @@
             <div class="glass-card principles-card">
               <h3 class="principles-title">Princípios</h3>
 
-              <div class="principle-item">
+              <div class="principle-item" tabindex="0">
                 <div class="principle-icon">
                   <svg
                     width="24"
@@ -366,15 +387,15 @@
                   </svg>
                 </div>
                 <div class="principle-content">
-                  <h4>Simplicidade radical</h4>
+                  <h4>Design com propósito</h4>
                   <p>
-                    Remover tudo que não é essencial até chegar na essência
-                    pura.
+                    Cada decisão é tomada para resolver um problema real — foco
+                    em resultados mensuráveis.
                   </p>
                 </div>
               </div>
 
-              <div class="principle-item">
+              <div class="principle-item" tabindex="0">
                 <div class="principle-icon">
                   <svg
                     width="24"
@@ -390,14 +411,15 @@
                   </svg>
                 </div>
                 <div class="principle-content">
-                  <h4>Experiência acima de tudo</h4>
+                  <h4>Empatia pelo usuário</h4>
                   <p>
-                    O usuário não deve pensar. Deve apenas usar e se encantar.
+                    Entender contexto e necessidades reais para criar soluções
+                    mais humanas.
                   </p>
                 </div>
               </div>
 
-              <div class="principle-item">
+              <div class="principle-item" tabindex="0">
                 <div class="principle-icon">
                   <svg
                     width="24"
@@ -413,15 +435,12 @@
                   </svg>
                 </div>
                 <div class="principle-content">
-                  <h4>Detalhes que fazem a diferença</h4>
-                  <p>
-                    Perfeição não é quando não há nada a adicionar, mas quando
-                    não há nada a remover.
-                  </p>
+                  <h4>Simplicidade radical</h4>
+                  <p>Eliminar ruído até restar apenas o essencial e o útil.</p>
                 </div>
               </div>
 
-              <div class="principle-item">
+              <div class="principle-item" tabindex="0">
                 <div class="principle-icon">
                   <svg
                     width="24"
@@ -437,10 +456,10 @@
                   </svg>
                 </div>
                 <div class="principle-content">
-                  <h4>Inovação com propósito</h4>
+                  <h4>Entrega confiável</h4>
                   <p>
-                    Tecnologia deve resolver problemas reais, não criar
-                    complexidade artificial.
+                    Priorizar estabilidade e manutenção — soluções que funcionam
+                    na prática, sempre.
                   </p>
                 </div>
               </div>
@@ -683,7 +702,8 @@
           Vamos <span class="highlight">conversar</span>
         </h2>
         <p class="contact-subtitle">
-          Tem um projeto em mente? Vamos construir algo <span class="highlight">único</span> juntos.
+          Tem um projeto em mente? Vamos construir algo
+          <span class="highlight">único</span> juntos.
         </p>
 
         <!-- Contact Pills -->
@@ -882,7 +902,6 @@
           "assets/images/totem-pandora.png",
           "assets/images/totem-globo.png",
           "assets/images/totem-harsco.png",
-          "assets/images/leko.png",
         ];
 
         const settings = {
