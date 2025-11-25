@@ -790,7 +790,7 @@
       </div>
     </footer>
 
-    <!-- Project Modal -->
+    <!-- Project Modal (imagem única) -->
     <div id="projModal" class="proj-modal" aria-hidden="true">
       <div
         class="modal-card"
@@ -799,18 +799,11 @@
         aria-label="Detalhes do projeto"
       >
         <div class="modal-media">
-          <div class="modal-gallery">
-            <button class="gallery-prev" aria-label="Anterior">‹</button>
-            <div class="gallery-track">
-              <img
-                id="modalImage"
-                src="/assets/images/totem-prada.png"
-                alt="Projeto"
-              />
-            </div>
-            <button class="gallery-next" aria-label="Próximo">›</button>
-          </div>
-          <div class="modal-thumbs" id="modalThumbs" aria-hidden="true"></div>
+          <img
+            id="modalImage"
+            src="/assets/images/totem-prada.png"
+            alt="Projeto"
+          />
         </div>
         <div class="modal-body">
           <h3 id="modalTitle">Título do projeto</h3>
@@ -1086,18 +1079,13 @@
         window.addEventListener("load", () => setTimeout(init, 200));
       })();
 
-      // Project modal logic
+      // Project modal logic (simplified: imagem única)
       (function () {
         const modal = document.getElementById("projModal");
         const modalClose = document.getElementById("modalClose");
         const modalTitle = document.getElementById("modalTitle");
         const modalDesc = document.getElementById("modalDesc");
         const modalImage = document.getElementById("modalImage");
-        const galleryPrev = document.querySelector(".gallery-prev");
-        const galleryNext = document.querySelector(".gallery-next");
-        const modalThumbs = document.getElementById("modalThumbs");
-        let gallery = null; // array of src
-        let galleryIndex = 0;
         const modalTags = document.getElementById("modalTags");
         const modalPrimary = document.getElementById("modalPrimary");
         const modalSecondary = document.getElementById("modalSecondary");
@@ -1124,60 +1112,30 @@
             modalTags.appendChild(s);
           });
 
-          // image(s) handling: prefer data-gallery, then data-image, then project-icon img/svg
-          gallery = null;
-          galleryIndex = 0;
-          // check data-gallery on card (comma-separated)
-          const galleryData = card.dataset.gallery;
-          if (galleryData) {
-            gallery = galleryData
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean);
-          } else if (card.dataset.image) {
-            gallery = [card.dataset.image.trim()];
-          } else if (iconImg && iconImg.src) {
-            gallery = [iconImg.src];
-          }
-
+          // Single image handling: prefer data-image, then project-icon img, then svg, then fallback
           const mediaWrap = modalImage.closest(".modal-media");
-          // clear thumbs
-          modalThumbs.innerHTML = "";
+          // remove any previously cloned svg
+          const prevClone = mediaWrap.querySelector("svg[data-clone]");
+          if (prevClone) prevClone.remove();
 
-          if (gallery && gallery.length > 0) {
-            // render first image and thumbs
-            modalImage.src = gallery[0];
-            modalImage.alt = titleEl ? titleEl.textContent : "Projeto";
+          if (card.dataset.image) {
+            modalImage.src = card.dataset.image.trim();
             modalImage.style.display = "block";
-            modalThumbs.setAttribute("aria-hidden", "false");
-            gallery.forEach((src, i) => {
-              const t = document.createElement("img");
-              t.src = src;
-              t.alt = titleEl
-                ? `${titleEl.textContent} - ${i + 1}`
-                : `Thumb ${i + 1}`;
-              t.addEventListener("click", () => {
-                galleryIndex = i;
-                renderGallery();
-              });
-              if (i === 0) t.classList.add("active");
-              modalThumbs.appendChild(t);
-            });
+            modalImage.alt = titleEl ? titleEl.textContent : "Projeto";
+          } else if (iconImg && iconImg.src) {
+            modalImage.src = iconImg.src;
+            modalImage.style.display = "block";
+            modalImage.alt = titleEl ? titleEl.textContent : "Projeto";
           } else if (iconSvg) {
-            // clone svg into mediaWrap
+            // show cloned svg instead of img
             modalImage.style.display = "none";
             const clone = iconSvg.cloneNode(true);
             clone.setAttribute("data-clone", "true");
-            // remove previous
-            const prev = mediaWrap.querySelector("svg[data-clone]");
-            if (prev) prev.remove();
             mediaWrap.appendChild(clone);
-            modalThumbs.setAttribute("aria-hidden", "true");
           } else {
-            // fallback image
             modalImage.src = "/assets/images/totem-prada.png";
             modalImage.style.display = "block";
-            modalThumbs.setAttribute("aria-hidden", "true");
+            modalImage.alt = titleEl ? titleEl.textContent : "Projeto";
           }
 
           // links
@@ -1186,47 +1144,10 @@
           const secondaryLink = card.querySelector(".btn-project-icon");
           if (secondaryLink) modalSecondary.href = secondaryLink.href || "#";
 
-          // attach gallery controls (ensure handlers are fresh)
-          const galleryPrevBtn = modal.querySelector(".gallery-prev");
-          const galleryNextBtn = modal.querySelector(".gallery-next");
-          if (galleryPrevBtn)
-            galleryPrevBtn.onclick = (e) => {
-              e.stopPropagation();
-              prevImage();
-            };
-          if (galleryNextBtn)
-            galleryNextBtn.onclick = (e) => {
-              e.stopPropagation();
-              nextImage();
-            };
-
           modal.classList.add("active");
           modal.setAttribute("aria-hidden", "false");
           document.body.style.overflow = "hidden";
         }
-
-        function renderGallery() {
-          if (!gallery || gallery.length === 0) return;
-          galleryIndex = (galleryIndex + gallery.length) % gallery.length;
-          modalImage.src = gallery[galleryIndex];
-          // update thumbnails active
-          Array.from(modalThumbs.children).forEach((img, idx) => {
-            img.classList.toggle("active", idx === galleryIndex);
-          });
-        }
-
-        function nextImage() {
-          if (!gallery) return;
-          galleryIndex = (galleryIndex + 1) % gallery.length;
-          renderGallery();
-        }
-        function prevImage() {
-          if (!gallery) return;
-          galleryIndex = (galleryIndex - 1 + gallery.length) % gallery.length;
-          renderGallery();
-        }
-
-        // gallery controls are attached when opening modal to avoid stale listeners
 
         function closeModal() {
           modal.classList.remove("active");
@@ -1259,10 +1180,6 @@
           if (!modal.classList.contains("active")) return;
           if (e.key === "Escape") {
             closeModal();
-          } else if (e.key === "ArrowRight") {
-            nextImage();
-          } else if (e.key === "ArrowLeft") {
-            prevImage();
           }
         });
       })();
