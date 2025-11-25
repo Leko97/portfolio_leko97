@@ -99,7 +99,7 @@
             <div class="liquid-container">
               <div class="liquid-glass-1"></div>
               <div class="liquid-glass-2">
-                <img class="hero-ot" src="/assets/images/hero-ot.png" alt="" />
+                <img class="hero-ot" src="assets/images/hero-ot.png" alt="" />
               </div>
 
               <!-- Floaters: imagens que se movem e colidem dentro do vidro -->
@@ -463,7 +463,7 @@
             <div class="project-icon">
               <img
                 class="pill-icon bradesco"
-                src="/assets/images/bradesco-logo.png"
+                src="assets/images/bradesco-logo.png"
                 alt="Bradesco Logo"
               />
             </div>
@@ -610,7 +610,7 @@
           <div class="project-card">
             <div class="project-icon">
               <img
-                src="/assets/images/sbt.png"
+                src="assets/images/sbt.png"
                 alt="SBT Logo"
                 class="pill-icon"
               />
@@ -801,7 +801,7 @@
         <div class="modal-media">
           <img
             id="modalImage"
-            src="/assets/images/totem-prada.png"
+            src="assets/images/totem-prada.png"
             alt="Projeto"
           />
         </div>
@@ -872,14 +872,14 @@
         const container = document.getElementById("floaters");
         if (!container) return;
 
-        // Imagens de exemplo — substitua/adicione caminhos em /assets/images
+        // Imagens de exemplo — substitua/adicione caminhos em assets/images
         const imagePaths = [
-          "/assets/images/totem-prada.png",
-          "/assets/images/totem-kiosk.png",
-          "/assets/images/totem-pandora.png",
-          "/assets/images/totem-globo.png",
-          "/assets/images/totem-harsco.png",
-          "/assets/images/leko.png",
+          "assets/images/totem-prada.png",
+          "assets/images/totem-kiosk.png",
+          "assets/images/totem-pandora.png",
+          "assets/images/totem-globo.png",
+          "assets/images/totem-harsco.png",
+          "assets/images/leko.png",
         ];
 
         const settings = {
@@ -1133,7 +1133,7 @@
             clone.setAttribute("data-clone", "true");
             mediaWrap.appendChild(clone);
           } else {
-            modalImage.src = "/assets/images/totem-prada.png";
+            modalImage.src = "assets/images/totem-prada.png";
             modalImage.style.display = "block";
             modalImage.alt = titleEl ? titleEl.textContent : "Projeto";
           }
