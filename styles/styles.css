@@ -139,6 +139,12 @@ header.scrolled {
   width: 8vw;
   height: auto;
   object-fit: contain;
+  margin-right: -5vw;
+}
+.reference-pill {
+  width: 2vw !important;
+  height: auto;
+  object-fit: contain;
 }
 .logo-text {
   color: rgba(255, 255, 255, 0.8);
