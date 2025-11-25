@@ -132,7 +132,7 @@ Totens carregadores e painéis informativos com gestão de conteúdo acessível.
 ### Contato
 Links para:
 - Email: leonardo@onetouch.com.br
-- GitHub: [@leko97](https://github.com/leko97)
+- GitHub: [@Leko97](https://github.com/Leko97)
 - LinkedIn: [Leonardo Ortelan Hora](https://www.linkedin.com/in/leonardo-ortelan-hora-222a9a1b0/)
 - Website: [One Touch](https://onetouch.com.br)
 
@@ -180,7 +180,7 @@ O portfolio é totalmente responsivo com breakpoints para:
 
 **Leo Ortelan Hora**
 - Website: [One Touch Interactive Solutions](https://onetouch.com.br)
-- GitHub: [@leko97](https://github.com/leko97)
+- GitHub: [@Leko97](https://github.com/Leko97)
 - LinkedIn: [Leonardo Ortelan Hora](https://www.linkedin.com/in/leonardo-ortelan-hora-222a9a1b0/)
 - Email: leonardo@onetouch.com.br
 
