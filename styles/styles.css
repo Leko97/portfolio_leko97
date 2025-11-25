@@ -431,6 +431,12 @@ p {
   z-index: 10; /* colocado acima do conteúdo base para permitir recorte parcial */
 }
 
+/* isolate painting to avoid compositor thrashing */
+.liquid-container,
+.liquid-glass-2 {
+  contain: paint;
+}
+
 .liquid-glass-1 {
   position: absolute;
   inset: 0;
@@ -460,7 +466,7 @@ p {
   background: linear-gradient(225deg, rgba(0, 255, 136, 0.1), transparent);
   -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
-  will-change: opacity, transform;
+  will-change: transform;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   z-index: 12; /* garantir que o vidro possa sobrepor parcialmente a portrait */
@@ -495,6 +501,37 @@ p {
 
 .floater {
   opacity: 1;
+}
+
+.floater {
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Respect user's motion preference and reduce heavy effects */
+@media (prefers-reduced-motion: reduce) {
+  .floaters {
+    display: none !important;
+  }
+  .liquid-glass-1,
+  .liquid-glass-2,
+  .glass-card {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* Safari / WebKit: reduce blur intensity and stop continuous opacity animation which triggers repaints */
+@supports (-webkit-backdrop-filter: blur(0)) {
+  .liquid-glass-1 {
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    animation: none !important; /* avoid opacity/transform animations that can trigger repaints */
+  }
+  .liquid-glass-2 {
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+  }
 }
 
 @keyframes pulseScale {
